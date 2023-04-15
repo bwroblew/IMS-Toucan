@@ -3,7 +3,6 @@ import os
 
 import librosa.display as lbd
 import matplotlib.pyplot as plt
-import sounddevice
 import soundfile
 import torch
 
@@ -300,6 +299,7 @@ class ToucanTTSInterface(torch.nn.Module):
                    pitch_variance_scale=pitch_variance_scale,
                    energy_variance_scale=energy_variance_scale).cpu()
         wav = torch.cat((wav, torch.zeros([12000])), 0).numpy()
+        import sounddevice
         if increased_compatibility_mode:
             wav = [val for val in wav for _ in (0, 1)]  # doubling the sampling rate for better compatibility (24kHz is not as standard as 48kHz)
             sounddevice.play(float2pcm(wav), samplerate=48000)
